@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  subcrawler:
+    build: .
+    volumes:
+      - "/tmp/data:/data"
+    command: crawl subhd -o /data/output.json
+  tor:
+    image: zeta0/alpine-tor:latest
+    ports:
+      - "8118:8118"
+      - "2090:2090"
+    environment:
+      - tors=100
+      - privoxy=1
