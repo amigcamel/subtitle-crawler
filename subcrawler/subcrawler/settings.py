@@ -11,7 +11,6 @@ BOT_NAME = 'subcrawler'
 SPIDER_MODULES = ['subcrawler.spiders']
 NEWSPIDER_MODULE = 'subcrawler.spiders'
 
-USER_AGENT = 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:57.0) Gecko/20100101 Firefox/57.0'  # noqa
 ROBOTSTXT_OBEY = False
 CONCURRENT_REQUESTS = 32
 
@@ -27,6 +26,8 @@ TELNETCONSOLE_HOST = '0.0.0.0'
 FEED_EXPORT_ENCODING = 'utf-8'
 
 DOWNLOADER_MIDDLEWARES = {
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+    'scrapy_fake_useragent.middleware.RandomUserAgentMiddleware': 400,
     'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 100,
 }
 
