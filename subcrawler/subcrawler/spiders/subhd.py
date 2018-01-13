@@ -42,11 +42,11 @@ class SubhdSpider(scrapy.Spider):
             'title_tran': title_tran,
         }
         logger.debug(output)
-        yield output
-        # selectors = response.css('a[href^="/ar0/"]::attr(href)')
-        # for selector in selectors:
-        #     url = f'{self._base_url}{selector.extract()}'
-        #     yield scrapy.Request(url=url, callback=self.parse_ar0)
+        # yield output
+        selectors = response.css('a[href^="/ar0/"]::attr(href)')
+        for selector in selectors:
+            url = f'{self._base_url}{selector.extract()}'
+            yield scrapy.Request(url=url, callback=self.parse_ar0)
 
     def parse_ar0(self, response):
         """Parse "ar0" pages."""
@@ -54,7 +54,11 @@ class SubhdSpider(scrapy.Spider):
         formdata = {'sub_id': sid}
         url = 'http://subhd.com/ajax/down_ajax'
         yield FormRequest(
-            url=url, callback=self.parse_down_ajax, formdata=formdata)
+            url=url,
+            callback=self.parse_down_ajax,
+            formdata=formdata,
+            meta={'proxy': 'http://tor:8118'},
+        )
 
     def parse_down_ajax(self, response):
         """Parse "ajax_down" page."""
