@@ -7,9 +7,6 @@ from scrapy.utils.project import get_project_settings
 from scrapy.http import FormRequest
 import scrapy
 
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger(__name__)
-
 TCP_PROXY = get_project_settings()['TCP_PROXY']
 
 
@@ -44,7 +41,7 @@ class SubhdSpider(scrapy.Spider):
             'title_orig': title_orig,
             'title_tran': title_tran,
         }
-        logger.debug(output)
+        logging.debug(output)
         # yield output
         selectors = response.css('a[href^="/ar0/"]::attr(href)')
         for selector in selectors:
