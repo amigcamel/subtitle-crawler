@@ -11,8 +11,11 @@ services:
       - privoxy=1
   subcrawler:
     build: .
+    ports:
+      - "6023:6023"
     volumes:
       - "./data:/data"
+      - "./data/.scrapy:/subtitle-crawler/subcrawler/.scrapy"
     depends_on:
       - tor
     command: crawl subhd
