@@ -3,11 +3,14 @@
 import logging
 import json
 
+from scrapy.utils.project import get_project_settings
 from scrapy.http import FormRequest
 import scrapy
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+
+TCP_PROXY = get_project_settings()['TCP_PROXY']
 
 
 class SubhdSpider(scrapy.Spider):
@@ -42,11 +45,11 @@ class SubhdSpider(scrapy.Spider):
             'title_tran': title_tran,
         }
         logger.debug(output)
-        yield output
-        # selectors = response.css('a[href^="/ar0/"]::attr(href)')
-        # for selector in selectors:
-        #     url = f'{self._base_url}{selector.extract()}'
-        #     yield scrapy.Request(url=url, callback=self.parse_ar0)
+        # yield output
+        selectors = response.css('a[href^="/ar0/"]::attr(href)')
+        for selector in selectors:
+            url = f'{self._base_url}{selector.extract()}'
+            yield scrapy.Request(url=url, callback=self.parse_ar0)
 
     def parse_ar0(self, response):
         """Parse "ar0" pages."""
@@ -54,10 +57,23 @@ class SubhdSpider(scrapy.Spider):
         formdata = {'sub_id': sid}
         url = 'http://subhd.com/ajax/down_ajax'
         yield FormRequest(
-            url=url, callback=self.parse_down_ajax, formdata=formdata)
+            url=url,
+            callback=self.parse_down_ajax,
+            formdata=formdata,
+            meta={'proxy': 'http://{TCP_PROXY}', '_formdata': formdata},
+        )
 
     def parse_down_ajax(self, response):
         """Parse "ajax_down" page."""
         data = json.loads(response.text)
         if data['success']:
             logging.info(data['url'])
+        else:
+            logging.warning('fail to get ajax url, resend request...')
+            formdata = response.meta.get('_formdata')
+            yield FormRequest(
+                url=response.url,
+                callback=self.parse_down_ajax,
+                formdata=formdata,
+                meta={'proxy': f'http://{TCP_PROXY}', '_formdata': formdata},
+            )
