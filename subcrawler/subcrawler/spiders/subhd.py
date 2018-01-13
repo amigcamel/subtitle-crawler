@@ -26,13 +26,25 @@ class SubhdSpider(scrapy.Spider):
         for selector in selectors:
             if selector.re('/do0/\d+'):
                 url = f'{self._base_url}{selector.extract()}'
-                yield scrapy.Request(url=url, callback=self.parse_do0)
+                yield scrapy.Request(
+                    url=url,
+                    callback=self.parse_do0,
+                    meta={'proxy': f'http://{TCP_PROXY}'},
+                )
             elif selector.re('/ar0/\d+'):
                 url = f'{self._base_url}{selector.extract()}'
-                yield scrapy.Request(url=url, callback=self.parse_ar0)
+                yield scrapy.Request(
+                    url=url,
+                    callback=self.parse_ar0,
+                    meta={'proxy': f'http://{TCP_PROXY}'},
+                )
             else:
                 url = f'{self._base_url}{selector.extract()}'
-                yield scrapy.Request(url=url, callback=self.parse)
+                yield scrapy.Request(
+                    url=url,
+                    callback=self.parse,
+                    meta={'proxy': f'http://{TCP_PROXY}'},
+                )
 
     def parse_do0(self, response):
         """Parse "do0" pages."""
@@ -48,7 +60,11 @@ class SubhdSpider(scrapy.Spider):
         selectors = response.css('a[href^="/ar0/"]::attr(href)')
         for selector in selectors:
             url = f'{self._base_url}{selector.extract()}'
-            yield scrapy.Request(url=url, callback=self.parse_ar0)
+            yield scrapy.Request(
+                url=url,
+                callback=self.parse_ar0,
+                meta={'proxy': f'http://{TCP_PROXY}'},
+            )
 
     def parse_ar0(self, response):
         """Parse "ar0" pages."""
