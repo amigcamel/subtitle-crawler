@@ -60,7 +60,7 @@ class SubhdSpider(scrapy.Spider):
             url=url,
             callback=self.parse_down_ajax,
             formdata=formdata,
-            meta={'proxy': 'http://{TCP_PROXY}', '_formdata': formdata},
+            meta={'proxy': f'http://{TCP_PROXY}', '_formdata': formdata},
         )
 
     def parse_down_ajax(self, response):
