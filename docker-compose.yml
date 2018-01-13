@@ -12,7 +12,7 @@ services:
   subcrawler:
     build: .
     volumes:
-      - "/data:/data"
+      - "./data:/data"
     depends_on:
       - tor
     command: crawl subhd
