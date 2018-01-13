@@ -1,11 +1,6 @@
 version: '3'
 
 services:
-  subcrawler:
-    build: .
-    volumes:
-      - "/tmp/data:/data"
-    command: crawl subhd -o /data/output.json
   tor:
     image: zeta0/alpine-tor:latest
     ports:
@@ -14,3 +9,11 @@ services:
     environment:
       - tors=100
       - privoxy=1
+  subcrawler:
+    build: .
+    volumes:
+      - "/tmp/data:/data"
+    depends_on:
+      - tor
+    command: crawl subhd -o /data/output.json
+
