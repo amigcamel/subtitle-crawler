@@ -20,3 +20,6 @@ FEED_EXPORT_ENCODING = 'utf-8'
 DOWNLOADER_MIDDLEWARES = {
     'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 100,
 }
+
+# CUSTOM SETTINGS
+TCP_PROXY = 'tor:8118'

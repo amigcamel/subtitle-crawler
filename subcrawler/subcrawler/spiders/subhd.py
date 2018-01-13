@@ -3,11 +3,14 @@
 import logging
 import json
 
+from scrapy.utils.project import get_project_settings
 from scrapy.http import FormRequest
 import scrapy
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+
+TCP_PROXY = get_project_settings()['TCP_PROXY']
 
 
 class SubhdSpider(scrapy.Spider):
@@ -57,7 +60,7 @@ class SubhdSpider(scrapy.Spider):
             url=url,
             callback=self.parse_down_ajax,
             formdata=formdata,
-            meta={'proxy': 'http://tor:8118'},
+            meta={'proxy': 'http://{TCP_PROXY}', '_formdata': formdata},
         )
 
     def parse_down_ajax(self, response):
@@ -65,3 +68,12 @@ class SubhdSpider(scrapy.Spider):
         data = json.loads(response.text)
         if data['success']:
             logging.info(data['url'])
+        else:
+            logging.warning('fail to get ajax url, resend request...')
+            formdata = response.meta.get('_formdata')
+            yield FormRequest(
+                url=response.url,
+                callback=self.parse_down_ajax,
+                formdata=formdata,
+                meta={'proxy': f'http://{TCP_PROXY}', '_formdata': formdata},
+            )
