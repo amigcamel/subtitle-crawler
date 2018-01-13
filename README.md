@@ -2,18 +2,14 @@ subtitle-crawler
 ===
 
 ## Prerequisite
-Python 3.6+
+
++ Python 3.6+
++ docker-compose 1.13.0+
 
 ## Usage
 
     scrapy crawl subhd -o output.json
 
-### Docker
+### Docker Compose
 
-Build image:
-
-    docker build -t subcrawler .
-
-Run crawlers:
-
-    docker run -it --rm -v <mount point>:/data subcrawler crawl subhd -o /data/output.json
+    docker-compose -d --build
