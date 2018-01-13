@@ -7,6 +7,8 @@ from scrapy.utils.project import get_project_settings
 from scrapy.http import FormRequest
 import scrapy
 
+from ..items import SubItem
+
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
@@ -68,6 +70,7 @@ class SubhdSpider(scrapy.Spider):
         data = json.loads(response.text)
         if data['success']:
             logging.info(data['url'])
+            yield SubItem(file_urls=[data['url']])
         else:
             logging.warning('fail to get ajax url, resend request...')
             formdata = response.meta.get('_formdata')

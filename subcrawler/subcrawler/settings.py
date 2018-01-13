@@ -27,5 +27,11 @@ DOWNLOADER_MIDDLEWARES = {
     'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 100,
 }
 
+ITEM_PIPELINES = {
+    'scrapy.pipelines.files.FilesPipeline': 1
+}
+
+FILES_STORE = '/data'
+
 # CUSTOM SETTINGS
 TCP_PROXY = 'tor:8118'
