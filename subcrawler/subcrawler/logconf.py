@@ -1,3 +1,4 @@
+"""Custom logging settings."""
 import copy
 
 from colorlog import ColoredFormatter
