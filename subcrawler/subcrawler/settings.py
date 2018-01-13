@@ -16,10 +16,10 @@ ROBOTSTXT_OBEY = False
 CONCURRENT_REQUESTS = 32
 
 HTTPCACHE_ENABLED = True
-HTTPCACHE_EXPIRATION_SECS = 60 * 60
+HTTPCACHE_EXPIRATION_SECS = 60 * 60 * 24 * 30  # one month
 HTTPCACHE_DIR = 'httpcache'
-HTTPCACHE_IGNORE_HTTP_CODES = []
-HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+HTTPCACHE_IGNORE_HTTP_CODES = [500]
+HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.LeveldbCacheStorage'
 
 FEED_EXPORT_ENCODING = 'utf-8'
 
