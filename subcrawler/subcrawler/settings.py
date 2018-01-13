@@ -1,5 +1,11 @@
 """Scrapy settings."""
 # -*- coding: utf-8 -*-
+import scrapy.utils.log
+
+from .logconf import _get_handler_custom
+
+scrapy.utils.log._get_handler = _get_handler_custom
+
 BOT_NAME = 'subcrawler'
 
 SPIDER_MODULES = ['subcrawler.spiders']
@@ -16,3 +22,7 @@ HTTPCACHE_IGNORE_HTTP_CODES = []
 HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 FEED_EXPORT_ENCODING = 'utf-8'
+
+DOWNLOADER_MIDDLEWARES = {
+    'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 100,
+}
