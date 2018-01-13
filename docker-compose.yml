@@ -15,5 +15,5 @@ services:
       - "/tmp/data:/data"
     depends_on:
       - tor
-    command: crawl subhd -o /data/output.json
+    command: crawl subhd
 
