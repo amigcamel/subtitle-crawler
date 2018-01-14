@@ -8,6 +8,10 @@ subtitle-crawler
 
 ## Usage
 
+Clone this project:
+
+    git clone https://github.com/amigcamel/subtitle-crawler
+
 Start crawling:
 
     docker-compose -d --build
@@ -23,3 +27,12 @@ Controlling crawlers via telnet ([scrapy telnet console](https://doc.scrapy.org/
 Monitor haproxy status, visit http://localhost:2090
 
     
+## Data
+
+#### Subtitle files  
+
+All donwloaded files will be saved in `<project_dir>/data/full`
+
+#### http cache  
+
+Cache is stored in `<project_dir>/data/.scrapy`
