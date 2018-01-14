@@ -8,8 +8,4 @@ subtitle-crawler
 
 ## Usage
 
-    scrapy crawl subhd -o output.json
-
-### Docker Compose
-
     docker-compose -d --build
